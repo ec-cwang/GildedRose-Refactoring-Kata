@@ -14,4 +14,77 @@ public class GildedRoseTest {
         assertEquals("foo", app.items[0].name);
     }
 
+    @Test public void
+	should_decrease_quality_by_1_for_normal_item_quality_positive() {
+        Item[] items = new Item[] { new Item("foo", 10, 10) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(9, app.items[0].quality);
+	}
+
+    @Test public void
+	should_decrease_sellin_by_1_for_nonSulfur_items() {
+        Item[] items = new Item[] { new Item("foo", 10, 10) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(9, app.items[0].sellIn);
+	}
+
+    @Test public void
+	should_increase_quality_by_1_for_AgedBrie() {
+        Item[] items = new Item[] { new Item("Aged Brie", 30, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(41, app.items[0].quality);
+    }
+
+    @Test public void
+    should_increase_quality_by_1_after_sell_date_for_AgedBrie() {
+        Item[] items = new Item[] { new Item("Aged Brie", -2, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(42, app.items[0].quality);
+    }
+
+
+    @Test public void
+	should_not_increase_quality_if_greater_equal_than_50_for_AgedBrie() {
+        Item[] items = new Item[] { new Item("Aged Brie", 30, 50) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(50, app.items[0].quality);
+    }
+
+    @Test public void
+    should_not_increase_quality_if_greater_equal_than_50_after_sell_date_for_AgedBrie() {
+        Item[] items = new Item[] { new Item("Aged Brie", -2, 50) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(50, app.items[0].quality);
+    }
+
+    @Test public void
+    should_increase_quality_by_1_for_Backstage() {
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 30, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(41, app.items[0].quality);
+	}
+
+    @Test public void
+    should_not_increase_quality_if_greater_equal_than_50_for_Backstage() {
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 30, 50) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(50, app.items[0].quality);
+	}
+
+    @Test public void
+    should_not_change_sellin_nor_quality_for_Sulfuras() {
+        Item[] items = new Item[] { new Item("Sulfuras, Hand of Ragnaros", 30, 80) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(30, app.items[0].sellIn);
+        assertEquals(80, app.items[0].quality);
+	}
 }
